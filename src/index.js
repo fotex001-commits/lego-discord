@@ -6,12 +6,12 @@ const {
 
 const TOKEN = process.env.DISCORD_TOKEN;
 const CHANNEL_ID = process.env.DISCORD_CHANNEL_ID;
-const FEED_URL = process.env.FEED_URL;
+const FEED_URL = process.env.FEED_URL || "https://example.com/offers.json";
 
 const MIN_PROFIT = Number(process.env.MIN_PROFIT || 30);
 const CHECK_MINUTES = Number(process.env.CHECK_MINUTES || 5);
 
-if (!TOKEN || !CHANNEL_ID || !FEED_URL) {
+if (!TOKEN || !CHANNEL_ID) {
   console.error("Brakuje zmiennych środowiskowych.");
   process.exit(1);
 }
