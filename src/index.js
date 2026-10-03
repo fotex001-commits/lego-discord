@@ -23,34 +23,17 @@ const client = new Client({
 const sentOffers = new Set();
 
 async function getOffers() {
-  const response = await fetch(FEED_URL);
-
-  if (!response.ok) {
-    throw new Error(`Feed HTTP ${response.status}`);
-  }
-
-  const data = await response.json();
-
-  if (!Array.isArray(data)) {
-    throw new Error("Feed musi zwracać tablicę JSON.");
-  }
-
-  return data.map(item => {
-    const buyPrice = Number(item.price);
-    const resalePrice = Number(item.resalePrice);
-
-    return {
-      id: String(item.id || item.url),
-      title: item.title || "LEGO",
-      buyPrice,
-      resalePrice,
-      profit: resalePrice - buyPrice,
-      url: item.url
-    };
-  });
+  return [
+    {
+      id: "test-1",
+      title: "TEST LEGO 75300",
+      buyPrice: 50,
+      resalePrice: 100,
+      profit: 50,
+      url: "https://www.vinted.pl/"
+    }
+  ];
 }
-
-async function checkOffers() {
   const channel = await client.channels.fetch(CHANNEL_ID);
   const offers = await getOffers();
 
