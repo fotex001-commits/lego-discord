@@ -6,13 +6,12 @@ const {
 
 const TOKEN = process.env.DISCORD_TOKEN;
 const CHANNEL_ID = process.env.DISCORD_CHANNEL_ID;
-const FEED_URL = process.env.FEED_URL || "https://example.com/offers.json";
 
 const MIN_PROFIT = Number(process.env.MIN_PROFIT || 30);
 const CHECK_MINUTES = Number(process.env.CHECK_MINUTES || 5);
 
 if (!TOKEN || !CHANNEL_ID) {
-  console.error("Brakuje zmiennych środowiskowych.");
+  console.error("Brakuje DISCORD_TOKEN lub DISCORD_CHANNEL_ID.");
   process.exit(1);
 }
 
@@ -34,6 +33,8 @@ async function getOffers() {
     }
   ];
 }
+
+async function checkOffers() {
   const channel = await client.channels.fetch(CHANNEL_ID);
   const offers = await getOffers();
 
@@ -44,7 +45,7 @@ async function getOffers() {
     sentOffers.add(offer.id);
 
     const embed = new EmbedBuilder()
-      .setTitle("🧱 LEGO — OKAZJA")
+      .setTitle("🧱 LEGO — OKAZJA TESTOWA")
       .setDescription(`**${offer.title}**`)
       .addFields(
         {
@@ -78,14 +79,14 @@ client.once("ready", async () => {
   try {
     await checkOffers();
   } catch (error) {
-    console.error(error);
+    console.error("Błąd podczas testu:", error);
   }
 
   setInterval(async () => {
     try {
       await checkOffers();
     } catch (error) {
-      console.error(error);
+      console.error("Błąd:", error);
     }
   }, CHECK_MINUTES * 60 * 1000);
 });
